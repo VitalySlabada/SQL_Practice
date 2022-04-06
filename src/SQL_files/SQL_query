@@ -1,0 +1,268 @@
+select *
+FROM employees;
+
+SELECT * FROM departments;
+
+Select * from regions;
+
+SELECT employee_id, first_name, department
+FROM employees;
+
+
+SELECT *
+FROM employees
+WHERE department = 'Sports';
+
+-- Partial
+SELECT *
+FROM employees
+WHERE department LIKE '%nit%';
+
+-- Starts with
+SELECT *
+FROM employees
+WHERE department LIKE '%G';
+
+-- Starts with Gand length 5
+SELECT *
+FROM employees
+WHERE department LIKE '%G____';
+
+-- Greater than
+SELECT *
+FROM employees
+WHERE salary > 100000;
+
+-- Less than
+SELECT *
+FROM employees
+WHERE salary < 100000;
+
+-- Greater equal
+SELECT *
+FROM employees
+WHERE salary >= 100000;
+
+-- Less equal
+SELECT *
+FROM employees
+WHERE salary <= 100000;
+
+
+
+-- Show
+-- First Name, Last name, dept and salary
+-- Where working in CLothing and making more than 90k
+SELECT first_name, last_name, department, salary
+FROM employees
+WHERE department = 'Clothing' and salary > 90000;
+
+-- Show
+-- First Name, Last name, dept and salary
+-- Where working in CLothing or Pharmasy and making less than 40k
+SELECT first_name, last_name, department, salary
+FROM employees
+WHERE department = 'Clothing' OR (department = 'Pharmacy' and salary < 40000);
+
+-- Show
+-- First Name, Last name, dept and salary
+-- Where working in CLothing or Pharmasy and making less than 40k
+SELECT first_name, last_name, department, salary
+FROM employees
+WHERE department in ('Pharmacy', 'Clothing') and  salary < 40000;-- Show
+
+-- First Name, Last name, dept and salary
+-- Where working not in CLothing or Pharmasy and making less than 40k
+SELECT first_name, last_name, department, salary
+FROM employees
+WHERE department not in ('Pharmacy', 'Clothing') and  salary < 40000;
+
+
+-- range
+SELECT first_name, email
+FROM employees
+WHERE email is not NULL;
+
+-- range
+SELECT first_name, email
+FROM employees
+WHERE salary BETWEEN 80000 and 1000000;
+
+
+-- female, slary more than 110000 tool dept
+SELECT first_name, email
+FROM employees
+WHERE salary > 110000 and gender= 'Female' and department = 'Tools';
+
+
+
+-- SORTING     ORDER_BY ASC DESC
+SELECT *
+FROM employees
+ORDER BY employee_id DESC ;
+
+-- SORTING     ORDER_BY ASC DESC  5 rows
+-- Fetch / LIMIT works the same
+SELECT *
+FROM employees
+ORDER BY employee_id DESC
+LIMIT 5;
+-- FETCH FIRST 5 ROWS only
+
+
+-- HOW to see unique department
+SELECT DISTINCT  department
+FROM employees;
+
+
+
+-- print other column names
+SELECT salary AS annual_salary
+FROM employees;
+
+
+-- name and age of top 4 oldest students
+SELECT student_name, age
+from students
+ORDER BY age DESC
+LIMIT 4;
+
+
+-- STRING manipulatons !!!!!!!!
+Select upper(first_name), Upper(last_name)
+from employees;
+
+--LENGTH
+SELECT  LENGTH(first_name), first_name
+FROM employees;
+
+
+--TRIM
+SELECT LENGTH ('       Hello');
+SELECT LENGTH (TRIM('       Hello'));
+
+--Concatinate
+SELECT  first_name||' '||employees.last_name as full_name
+FROM employees;
+
+--boolean values
+SELECT first_name, salary,(salary>140000) as Greater_than_140k
+FROM employees
+ORDER BY salary desc;
+
+--Substring (string,start,end)
+Select Substring('this is test date', 5, 10) as test_data;
+Select Substring('this is test date' FROM 1 FOR 3)  as test_data;
+
+--initials
+Select   Substring(first_name,1, 1) ||'.'||Substring(last_name,1,1)||'.' as initials
+from employees;
+
+
+-- Does not change original data olny changes the way is
+SELECT department, REPLACE (department, 'Clothing', 'Clothes')
+FROM departments;
+
+
+
+-- MAX MIN COUNT etc
+SELECT MAX (salary)
+FROM employees;
+
+SELECT MIN (salary)
+FROM employees;
+
+SELECT ROUND (AVG (salary))
+FROM employees;
+
+SELECT COUNT (*)
+FROM employees;
+
+-- only not null emails
+SELECT COUNT (email)
+FROM employees;
+
+
+
+SELECT SUM (salary)
+FROM employees;
+
+
+
+-- who is making lowesst salary
+
+
+SELECT MIN(salary)
+FROM employees;
+
+Select *
+FROM employees
+where salary = 20542;
+
+
+-- COmbine
+-- Result - using subquery
+Select *
+FROM employees
+where salary = (SELECT MIN(salary)
+                FROM employees);
+
+
+
+
+SELECT DISTINCT department
+FROM employees;
+
+-- How many employees in pharmacy
+SELECT COUNT(*)
+FROM employees
+WHERE department = 'pharmacy';
+
+-- How many employees are working for each dept
+SELECT COUNT(*),department, Max(salary), Min(salary),Round(avg(salary))
+FROM employees
+GROUP BY department;
+
+-- List departmetn with more than 40 employees
+-- where applied before order by
+-- having - after
+-- is not   --      <>
+
+SELECT COUNT(*), department
+FROM employees
+where department <> 'Garden'  -- remove garden before ordering
+GROUP BY department
+Having count(*)> 40
+Order by count(*);
+
+
+-- show duplicate email domains
+SELECT COUNT(*), substring (email, position('@'in email)+1) as email_domain
+from employees
+where email is not NULL
+GROUP BY email_domain
+having count(*) > 1
+ORDER BY COunt(*) desc;
+
+
+SELECT first_name,salary,
+       CASE
+           WHEN salary < 80000 THEN 'UNDER PAID'
+           WHEN salary >80000 THEN 'PAID WELL'
+           ELSE 'UNPAID'
+           END as category
+FROM employees;
+
+-- if statements
+-- Case when then
+SELECT
+    CASE
+        When salary < 80000 then 'underpaid'
+        when salary > 80000 then 'paind well'
+        else 'unpaid'
+        end as category
+
+from employees;
+
+
+
